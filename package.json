@@ -1,0 +1,27 @@
+{
+  "name": "blog-aggregator-ts",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsx ./src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/h0dy/blog-aggregator-ts.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/h0dy/blog-aggregator-ts/issues"
+  },
+  "homepage": "https://github.com/h0dy/blog-aggregator-ts#readme",
+  "devDependencies": {
+    "@types/node": "^24.6.2",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}
