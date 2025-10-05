@@ -1,4 +1,4 @@
-import { readFile, readFileSync, writeFile, writeFileSync } from "fs";
+import { readFileSync, writeFileSync } from "fs";
 import os from "os";
 import path from "path";
 
@@ -18,7 +18,6 @@ export const setUser = (username: string) => {
 export const readConfig = () => {
   const data = readFileSync(filePath, "utf-8");
   const cfgJson = JSON.parse(data);
-  console.log(cfgJson)
   return validateConfig(cfgJson);
 };
 

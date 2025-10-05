@@ -5,7 +5,6 @@ import {
 } from "./commands/commands";
 import { handlerLogin } from "./commands/users.js";
 
-// postgres://postgres:hodypostgres@localhost:5432/gator?sslmode=disable
 function main() {
   if (process.argv.length <= 2) {
     console.error("Usage: cli <command> [args...]");
