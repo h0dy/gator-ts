@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
+import { eq, InferSelectModel } from "drizzle-orm";
 import { db } from "..";
-import { feeds, users } from "../schema";
+import { feeds, feedsFollows, users } from "../schema";
 
 export const createFeed = async (
   feedName: string,
@@ -32,4 +32,46 @@ export const getFeeds = async () => {
     .from(feeds)
     .innerJoin(users, eq(feeds.userId, users.id));
   return result;
+};
+
+export const getFeedByURL = async (feedUrl: string) => {
+  const [feed] = await db.select().from(feeds).where(eq(feeds.url, feedUrl));
+  return feed;
+};
+
+export const createFeedFollow = async (userId: string, feedId: string) => {
+  await db.insert(feedsFollows).values({ feedId, userId });
+  const [feedFollowInfo] = await db
+    .select({
+      id: feedsFollows.id,
+      createdAt: feedsFollows.createdAt,
+      updatedAt: feedsFollows.updatedAt,
+      userId: feedsFollows.userId,
+      feedId: feedsFollows.feedId,
+      username: users.name,
+      feedName: feeds.name,
+    })
+    .from(feedsFollows)
+    .innerJoin(feeds, eq(feedsFollows.feedId, feeds.id))
+    .innerJoin(users, eq(feedsFollows.userId, users.id))
+    .where(eq(users.id, userId));
+
+  return feedFollowInfo;
+};
+
+export type FeedsFollow = Awaited<ReturnType<typeof createFeedFollow>>;
+
+export const getFeedFollowsForUser = async (userId: string) => {
+  const feedFollows = await db
+    .select({
+      username: users.name,
+      userId: users.id,
+      feedName: feeds.name,
+      feedURL: feeds.url,
+    })
+    .from(feedsFollows)
+    .innerJoin(feeds, eq(feedsFollows.feedId, feeds.id))
+    .innerJoin(users, eq(feedsFollows.userId, users.id))
+    .where(eq(users.id, userId));
+  return feedFollows;
 };
