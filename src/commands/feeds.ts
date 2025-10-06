@@ -10,7 +10,11 @@ import {
 import { getUser } from "src/lib/db/queries/users";
 import { Feed, User } from "src/lib/db/schema";
 
-export const handlerAddFeed = async (cmdName: string, ...args: string[]) => {
+export const handlerAddFeed = async (
+  cmdName: string,
+  user: User,
+  ...args: string[]
+) => {
   if (args.length < 2) {
     throw new Error(`usage: ${cmdName} <feed-name> <feed-url>`);
   }
@@ -18,11 +22,6 @@ export const handlerAddFeed = async (cmdName: string, ...args: string[]) => {
   const feedName = args[0];
   const feedUrl = args[1];
 
-  const currentUser = readConfig().currentUserName;
-  const user = await getUser(currentUser);
-  if (!user) {
-    throw new Error(`User ${currentUser} not found, make sure to register`);
-  }
   const feed = await createFeed(feedName, feedUrl, user.id);
   if (!feed) throw new Error(`error in creating a feed`);
   await createFeedFollow(user.id, feed.id);
@@ -50,14 +49,13 @@ export const handlerListFeeds = async (_: string) => {
   }
 };
 
-export const handlerFollowFeed = async (cmdName: string, ...args: string[]) => {
+export const handlerFollowFeed = async (
+  cmdName: string,
+  user: User,
+  ...args: string[]
+) => {
   if (args.length < 1) {
     throw new Error(`usage: ${cmdName} <feed-url>`);
-  }
-  const currentUser = readConfig().currentUserName;
-  const user = await getUser(currentUser);
-  if (!user) {
-    throw new Error(`User ${currentUser} not found, make sure to register`);
   }
 
   const feedUrl = args[0];
@@ -78,14 +76,7 @@ Feed URL: ${feedUrl}
 `);
 };
 
-export const handlerFollowingFeeds = async (_: string) => {
-  const currentUser = readConfig().currentUserName;
-
-  const user = await getUser(currentUser);
-  if (!user) {
-    throw new Error(`User ${currentUser} not found, make sure to register`);
-  }
-
+export const handlerFollowingFeeds = async (_: string, user: User) => {
   const followFeeds = await getFeedFollowsForUser(user.id);
   console.log(`${user.name} follows:`);
   for (let f of followFeeds) {

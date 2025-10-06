@@ -16,6 +16,7 @@ import {
   handlerLogin,
   handlerRegister,
 } from "./commands/users.js";
+import { middlewareLoggedIn } from "./middleware";
 
 async function main() {
   if (process.argv.length <= 2) {
@@ -32,10 +33,14 @@ async function main() {
   registerCommand(commands, "reset", handlerReset);
   registerCommand(commands, "users", handlerListUsers);
   registerCommand(commands, "agg", handlerFeed);
-  registerCommand(commands, "addfeed", handlerAddFeed);
   registerCommand(commands, "feeds", handlerListFeeds);
-  registerCommand(commands, "follow", handlerFollowFeed);
-  registerCommand(commands, "following", handlerFollowingFeeds);
+  registerCommand(commands, "addfeed", middlewareLoggedIn(handlerAddFeed));
+  registerCommand(commands, "follow", middlewareLoggedIn(handlerFollowFeed));
+  registerCommand(
+    commands,
+    "following",
+    middlewareLoggedIn(handlerFollowingFeeds)
+  );
 
   try {
     await runCommand(commands, cmdName, ...cmdArgs);

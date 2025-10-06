@@ -1,3 +1,4 @@
+import { InferSelectModel } from "drizzle-orm";
 import { pgTable, timestamp, uuid, text, unique } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
@@ -10,7 +11,7 @@ export const users = pgTable("users", {
   name: text("name").notNull().unique(),
 });
 
-export type User = typeof users.$inferInsert;
+export type User = InferSelectModel<typeof users>;
 
 export const feeds = pgTable("feeds", {
   id: uuid("id").primaryKey().defaultRandom().notNull(),
@@ -26,7 +27,7 @@ export const feeds = pgTable("feeds", {
     .references(() => users.id, { onDelete: "cascade" }),
 });
 
-export type Feed = typeof feeds.$inferInsert;
+export type Feed = InferSelectModel<typeof feeds>;
 
 export const feedsFollows = pgTable(
   "feeds_follows",
