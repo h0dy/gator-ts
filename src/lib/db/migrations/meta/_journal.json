@@ -15,6 +15,13 @@
       "when": 1759759552845,
       "tag": "0001_icy_lila_cheney",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1759763018182,
+      "tag": "0002_lying_bromley",
+      "breakpoints": true
     }
   ]
 }
