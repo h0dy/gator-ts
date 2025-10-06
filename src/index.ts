@@ -1,8 +1,10 @@
+import { handlerFeed } from "./commands/aggregate";
 import {
   CommandsRegistery,
   registerCommand,
   runCommand,
 } from "./commands/commands";
+import { handlerAddFeed, hanlderListFeeds } from "./commands/feeds";
 import { handlerReset } from "./commands/reset";
 import {
   handlerListUsers,
@@ -24,13 +26,16 @@ async function main() {
   registerCommand(commands, "register", handlerRegister);
   registerCommand(commands, "reset", handlerReset);
   registerCommand(commands, "users", handlerListUsers);
+  registerCommand(commands, "agg", handlerFeed);
+  registerCommand(commands, "addfeed", handlerAddFeed);
+  registerCommand(commands, "feeds", hanlderListFeeds);
 
   try {
     await runCommand(commands, cmdName, ...cmdArgs);
     process.exit(0);
   } catch (err) {
     if (err instanceof Error) {
-      console.error(`Error running command ${cmdName}: ${err.message}`);
+      console.error(`Error running command ${cmdName}:\n${err.message}`);
     } else {
       console.error(`Unknown error running ${cmdName} command: ${err}`);
     }

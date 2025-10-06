@@ -8,6 +8,13 @@
       "when": 1759707012631,
       "tag": "0000_public_natasha_romanoff",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1759738737775,
+      "tag": "0001_sloppy_hitman",
+      "breakpoints": true
     }
   ]
 }

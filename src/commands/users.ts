@@ -2,7 +2,10 @@ import { createUser, getUser, getUsers } from "src/lib/db/queries/users.js";
 import { readConfig, setUser } from "../config.js";
 
 export const handlerLogin = async (cmdName: string, ...args: string[]) => {
-  if (args.length < 1) throw new Error(`usage: ${cmdName} <name>`);
+  if (args.length < 1) {
+    console.error(`usage: ${cmdName} <name>`);
+    return;
+  }
 
   const username = args[0];
   try {
