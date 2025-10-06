@@ -4,12 +4,12 @@ import {
   registerCommand,
   runCommand,
 } from "./commands/commands";
+import { handlerAddFeed, handlerListFeeds } from "./commands/feeds";
 import {
-  handlerAddFeed,
   handlerFollowFeed,
   handlerFollowingFeeds,
-  handlerListFeeds,
-} from "./commands/feeds";
+  handlerUnfollowFeed,
+} from "./commands/feedFollow";
 import { handlerReset } from "./commands/reset";
 import {
   handlerListUsers,
@@ -40,6 +40,11 @@ async function main() {
     commands,
     "following",
     middlewareLoggedIn(handlerFollowingFeeds)
+  );
+  registerCommand(
+    commands,
+    "unfollow",
+    middlewareLoggedIn(handlerUnfollowFeed)
   );
 
   try {

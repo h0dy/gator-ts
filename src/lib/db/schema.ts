@@ -29,8 +29,8 @@ export const feeds = pgTable("feeds", {
 
 export type Feed = InferSelectModel<typeof feeds>;
 
-export const feedsFollows = pgTable(
-  "feeds_follows",
+export const feedFollows = pgTable(
+  "feed_follows",
   {
     id: uuid("id").primaryKey().defaultRandom().notNull(),
     createdAt: timestamp("created_at").notNull().defaultNow(),
@@ -45,5 +45,5 @@ export const feedsFollows = pgTable(
       .notNull()
       .references(() => feeds.id, { onDelete: "cascade" }),
   },
-  (t) => [unique().on(t.feedId, t.userId)]
+  (t) => ({ unq: unique().on(t.userId, t.feedId) })
 );
